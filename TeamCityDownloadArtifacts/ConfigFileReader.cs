@@ -40,9 +40,9 @@ namespace DownloadArtifacts
 			{
 				Directory.CreateDirectory(StringConstants.DownloadArtifactsDirectory);
 			}
-			Console.WriteLine("Enter Teamcity build url ex:(https://teamcity.com/viewType.html?buildTypeId=buildId)");
+			Console.WriteLine(StringConstants.EnterTeamCityBuildUrl);
 			var teamcityURL = Console.ReadLine();
-			Console.WriteLine("Enter Teamcity Project ID (navigate to top level project): ex: projectId=teamcityproject");
+			Console.WriteLine(StringConstants.EnterTeamCityProjectPrompt);
 			var projectId = Console.ReadLine();
 			var stringBuilder = new StringBuilder();
 			stringBuilder.Append(teamcityURL);

@@ -135,8 +135,8 @@ namespace DownloadArtifacts
 					bytesProcessed += bytesRead;
 				}
 				while (bytesRead > 0);
-				localStream.Close();
-				stream.Close();
+				localStream.Dispose();
+				stream.Dispose();
 				newCopy = true;
 			}
 			

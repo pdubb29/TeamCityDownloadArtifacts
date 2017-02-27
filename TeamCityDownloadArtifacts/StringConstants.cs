@@ -27,6 +27,7 @@ ExtractionDirectoy - this argument is where you have your git repository for xm8
 		public const string DownloadComplete = "Download Complete";
 		public const string MissionAccomplished = "Mission accomplished.";
 		public const string DefaultExtractionDirectory = "C:\\temp\\downloadartifacts\\teamcityArtifacts\\";
-
+		public const string EnterTeamCityProjectPrompt = "Enter Teamcity Project ID (navigate to top level project): ex: projectId=teamcityproject";
+		public const string EnterTeamCityBuildUrl = "Enter Teamcity build url ex:(https://teamcity.com/viewType.html?buildTypeId=buildId)";
 	}
 }

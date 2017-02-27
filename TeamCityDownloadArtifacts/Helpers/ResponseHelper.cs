@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Net.Http;
 
 namespace DownloadArtifacts.Helpers
 {
@@ -10,6 +11,7 @@ namespace DownloadArtifacts.Helpers
 			WebResponse response = null;
 			do
 			{
+				CredentialHelper.GetCredentials();
 				var client = System.Net.WebRequest.Create(url);
 				try
 				{
