@@ -1,0 +1,7 @@
+TeamCityDownloadArtifacts/obj/
+Versions/
+TeamCityDownloadArtifacts/bin/
+packages/
+.vs/
+bin/
+obj/
