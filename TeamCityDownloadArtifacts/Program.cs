@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Net.Mime;
 using System.Xml;
-using DownloadDlls;
-using Newtonsoft.Json.Serialization;
+using DownloadArtifacts.Helpers;
+using static DownloadArtifacts.ApiStringConstants;
+using static DownloadArtifacts.StringConstants;
 
-namespace TeamCityDownloadArtifacts
+namespace DownloadArtifacts
 {
 	public class Program
 	{
@@ -17,6 +16,7 @@ namespace TeamCityDownloadArtifacts
 		private static string _downloadPath;
 		private static string _zipExtractionDirectory;
 		private static bool _cleanDirectory = true;
+		private const int _131072MBs = 1048576;
 
 		public static void Main(string[] args)
 		{
@@ -26,7 +26,7 @@ namespace TeamCityDownloadArtifacts
 			if (args.Any() && args[0].Equals("--help"))
 			{
 				//display help
-				Console.Write(StringConstants.HelpResponse);
+				Console.Write(HelpResponse);
 				Environment.Exit(0);
 			}
 			Setup(args);
@@ -36,19 +36,19 @@ namespace TeamCityDownloadArtifacts
 			var buildDocuments = XmlHelper.GetBuildDocs(builds);
 			if (!buildDocuments.Any())
 			{
-				Console.WriteLine(StringConstants.NoBuildsFound + args[0]);
+				Console.WriteLine(NoBuildsFound + args[0]);
 				Environment.Exit(1);
 			}
 			var orderedBuildDocuments = buildDocuments.OrderByDescending(x => x.Id);
 
-			Console.WriteLine(StringConstants.Downloading);
+			Console.WriteLine(Downloading);
 			if (GetFileResponse(orderedBuildDocuments.First(), data) || _cleanDirectory)
 			{
 				//now we got to unzip the files.
-				Console.WriteLine(StringConstants.Unzipping);
+				Console.WriteLine(Unzipping);
 				ZipFile.ExtractToDirectory(_downloadPath, _zipExtractionDirectory);
 			}
-			Console.WriteLine(StringConstants.MissionAccomplished);
+			Console.WriteLine(MissionAccomplished);
 		}
 
 		private static void Setup(string[] args)
@@ -61,7 +61,7 @@ namespace TeamCityDownloadArtifacts
 					if (args.Length > 1)
 					{
 						_zipExtractionDirectory = args[1];
-						FileHelper.WriteToFile(StringConstants.ExtractionDirectory, _zipExtractionDirectory, false);
+						FileHelper.WriteToFile(ExtractionDirectory, _zipExtractionDirectory, false);
 						if (!Directory.Exists(_zipExtractionDirectory))
 						{
 							SetDefaultExtractionDirectory();
@@ -70,7 +70,7 @@ namespace TeamCityDownloadArtifacts
 					else
 					{
 						string zipExtractionDirectory;
-						if ((zipExtractionDirectory = FileHelper.GetFileContents(StringConstants.ExtractionDirectory, false)) != null && Directory.Exists(zipExtractionDirectory))
+						if ((zipExtractionDirectory = FileHelper.GetFileContents(ExtractionDirectory, false)) != null && Directory.Exists(zipExtractionDirectory))
 						{
 							_zipExtractionDirectory = zipExtractionDirectory;
 						}
@@ -88,42 +88,42 @@ namespace TeamCityDownloadArtifacts
 			}
 			if (_cleanDirectory)
 			{
-				Console.WriteLine(StringConstants.Cleaning);
+				Console.WriteLine(Cleaning);
 				FileHelper.CleanPackages(_zipExtractionDirectory);
 			}
 		}
 
 		private static void SetDefaultExtractionDirectory()
 		{
-			Console.WriteLine(StringConstants.DirectoryNotFound + StringConstants.DefaultExtractionDirectory);
-			_zipExtractionDirectory = StringConstants.DefaultExtractionDirectory; //use a Default place where we can store these artifacts
+			Console.WriteLine(DirectoryNotFound + DefaultExtractionDirectory);
+			_zipExtractionDirectory = DefaultExtractionDirectory; //use a Default place where we can store these artifacts
 		}
 
 		private static XmlNodeList GetBuilds(ConfigFileData data)
 		{
-			var url = BaseUrl + "/projects/" + data.ProjectId + "/buildTypes/id:" + data.BuildTypeId + "/builds?status=SUCCESS";
+			var url = BaseUrl + Projects + data.ProjectId + BuildTypesId + data.BuildTypeId + BuildsStatusSuccess;
 			var xmlDocument = XmlHelper.GetXml(url);
-			var builds = xmlDocument.GetElementsByTagName("build");
+			var builds = xmlDocument.GetElementsByTagName(Build);
 			return builds;
 		}
 
 		private static bool GetFileResponse(BuildDoc buildDoc, ConfigFileData data)
 		{
 			bool newCopy = false;
-			var url = teamCityUrl + "repository/downloadAll/" + data.BuildTypeId + "/" + buildDoc.Id + ":id/artifacts.zip";
+			var url = teamCityUrl + RepositoryDownloadAll + data.BuildTypeId + Slash + buildDoc.Id + IdArtifactsZip;
 
 			var bytesProcessed = 0;
 
 			var response = ResponseHelper.GetWebResponse(url);
 
-			_downloadPath = StringConstants.DownloadArtifactsDirectory + "\\Build" + buildDoc.Id + ".zip";
+			_downloadPath = DownloadArtifactsDirectory + BackSlash + Build + buildDoc.Id + ZipExtension;
 			if (!File.Exists(_downloadPath))
 			{
 				FileHelper.DeleteOldZips();
 				var stream = response.GetResponseStream();
 				var localStream = File.Create(_downloadPath);
 
-				byte[] buffer = new byte[1048576];
+				byte[] buffer = new byte[_131072MBs];
 				var bytesRead = 0;
 
 				do
@@ -140,7 +140,7 @@ namespace TeamCityDownloadArtifacts
 				newCopy = true;
 			}
 			
-			Console.WriteLine(StringConstants.DownloadComplete);
+			Console.WriteLine(DownloadComplete);
 			return newCopy;
 		}
 	}

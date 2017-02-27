@@ -7,9 +7,9 @@
     <ProjectGuid>{68947F2E-15D0-4EC1-A5A4-D527DDE3B3BC}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DownloadDlls</RootNamespace>
+    <RootNamespace>DownloadArtifacts</RootNamespace>
     <AssemblyName>DownloadArtifacts</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>C:\Users\i56409\Desktop\TeamCityDownloadArtifacts\</PublishUrl>
@@ -27,6 +27,7 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -79,6 +80,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApiStringConstants.cs" />
     <Compile Include="BuildDoc.cs" />
     <Compile Include="ConfigFileData.cs" />
     <Compile Include="ConfigFileReader.cs" />
