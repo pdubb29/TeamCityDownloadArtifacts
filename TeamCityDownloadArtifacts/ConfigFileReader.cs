@@ -8,7 +8,12 @@ namespace DownloadArtifacts
 {
 	public class ConfigFileReader
 	{
-		private const string FileLocation = "C:\\temp\\downloadartifacts\\config.txt";
+		private readonly string FileLocation;
+
+		public ConfigFileReader(string fileLocation)
+		{
+			FileLocation = fileLocation;
+		}
 
 		public ConfigFileData ReadConfigFile()
 		{

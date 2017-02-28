@@ -11,6 +11,8 @@ namespace DownloadArtifacts
 {
 	public class Program
 	{
+        private const string FileLocation = "C:\\temp\\downloadartifacts\\config.txt";
+
 		private const string teamCityUrl = "https://teamcity.com/";
 		private const string BaseUrl = "https://teamcity.com/httpAuth/app/rest";
 		private static string _downloadPath;
@@ -20,7 +22,7 @@ namespace DownloadArtifacts
 
 		public static void Main(string[] args)
 		{
-			ConfigFileReader configFileReader = new ConfigFileReader();
+			ConfigFileReader configFileReader = new ConfigFileReader(FileLocation);
 			var data = configFileReader.ReadConfigFile();
 
 			if (args.Any() && args[0].Equals("--help"))
