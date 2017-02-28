@@ -42,7 +42,7 @@ namespace DownloadArtifacts.Helpers
 			return xmlAttributes[key] != null ? xmlAttributes[key].Value : "";
 		}
 
-		public static List<RestApiProjectDoc> GetProjectDocs(XmlNodeList xmlProjects)
+		public static List<RestApiProjectDoc> GetProjectDocs(System.Xml.XmlNodeList xmlProjects)
 		{
 			var projects = new List<RestApiProjectDoc>();
 
